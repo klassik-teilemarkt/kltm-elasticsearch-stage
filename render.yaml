@@ -14,7 +14,7 @@ projects:
             disk:
               name: esdata
               mountPath: /usr/share/elasticsearch/data
-              sizeGB: 10
+              sizeGB: 1
             envVars:
               # 256 MB heap is exactly 50% of this plan's 512 MB RAM.
               # Update both heap limits whenever the compute plan changes.
