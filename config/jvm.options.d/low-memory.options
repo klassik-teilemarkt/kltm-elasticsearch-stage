@@ -1,0 +1,10 @@
+# Stage-only native-memory budget; heap remains 256 MB in render.yaml.
+# Commit heap pages as needed instead of touching all of them at startup.
+-XX:-AlwaysPreTouch
+-XX:ReservedCodeCacheSize=32m
+-XX:MaxDirectMemorySize=32m
+# Use a lower-overhead collector for this single-core, small-heap stage node.
+-XX:-UseG1GC
+-XX:+UseParallelGC
+# Prefer lower startup/compiler memory over peak sustained throughput in stage.
+-XX:TieredStopAtLevel=1

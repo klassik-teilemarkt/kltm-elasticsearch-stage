@@ -2,12 +2,20 @@ cluster.name: "kltm-elastic-stage"
 network.host: 0.0.0.0
 http.port: 9200
 discovery.type: single-node
+node.roles: [master, data, ingest]
 
 # Render does not expose host sysctl configuration to this container.
 node.store.allow_mmap: false
 
 # This small stage service provides search, not local ML inference.
 xpack.ml.enabled: false
+
+# Application search does not need alerting or observability registries.
+xpack.watcher.enabled: false
+xpack.profiling.enabled: false
+xpack.apm_data.enabled: false
+xpack.otel_data.registry.enabled: false
+stack.templates.enabled: false
 
 # Require authentication on the Render private network.
 xpack.security.enabled: true
