@@ -1,0 +1,24 @@
+projects:
+  - name: Klassik-Teilemarkt
+    environments:
+      - name: Staging
+        services:
+          # A new resource name allows replacement across immutable regions.
+          - type: pserv
+            name: elasticsearch-frankfurt
+            runtime: docker
+            region: frankfurt
+            plan: 0.5c-512mb
+            numInstances: 1
+            autoDeployTrigger: "off"
+            disk:
+              name: esdata
+              mountPath: /usr/share/elasticsearch/data
+              sizeGB: 10
+            envVars:
+              # 256 MB heap is exactly 50% of this plan's 512 MB RAM.
+              # Update both heap limits whenever the compute plan changes.
+              - key: ES_JAVA_OPTS
+                value: "-Xms256m -Xmx256m"
+              - key: ELASTIC_PASSWORD
+                generateValue: true
