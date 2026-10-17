@@ -5,7 +5,7 @@ projects:
         services:
           # A new resource name allows replacement across immutable regions.
           - type: pserv
-            name: elasticsearch-frankfurt
+            name: elasticsearch-staging
             runtime: docker
             region: frankfurt
             plan: 0.5c-512mb
