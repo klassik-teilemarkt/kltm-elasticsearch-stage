@@ -1,33 +1,15 @@
-# Elasticsearch stage on Render
+# README
 
-This Blueprint deploys Elasticsearch 9.5.5 as the private service
-`elasticsearch-frankfurt` in `Klassik-Teilemarkt` / `Staging`, region Frankfurt.
+This is a template repository for running Elasticsearch on Render.
 
-The lowest paid compute plan provides 0.5 CPU and 512 MB RAM. `ES_JAVA_OPTS`
-sets equal initial and maximum heap sizes of 256 MB, exactly 50% of that RAM.
-Keep the plan and both heap limits in sync when resizing. This is a constrained
-stage configuration: check memory and indexing/search load before production.
-Local machine learning, including local ELSER inference, is disabled.
+* It uses [Render Disks](https://render.com/docs/disks) for persistent index storage.
 
-The 10 GB persistent disk stores Elasticsearch data. A single instance has no
-replica failover and is unavailable during redeploys. Use Elasticsearch-native
-snapshots for backups rather than relying on filesystem snapshots.
+* Elasticsearch runs in your [Render private network](https://render.com/docs/private-services) so it isn't exposed to the public Internet.
 
-Authentication is enabled. Render generates `ELASTIC_PASSWORD`; it is not
-committed to this repository. Connect from a Render service in the same region
-and workspace using the new service's internal hostname, HTTP port 9200, and
-the `elastic` username. HTTP is confined to the private network; there is no
-public service endpoint. Configure a least-privilege application API key before
-connecting an application. This Blueprint does not change application settings
-or copy the index from Elastic Cloud.
+* You can [configure Elasticsearch](https://www.elastic.co/guide/en/elasticsearch/reference/current/settings.html) using `config/elasticsearch.yml` in your fork of this repository. Render will automatically redeploy Elasticsearch when you push your changes.
 
-## Replacing the original Oregon service
+## Deployment
 
-Render cannot change a service's region in place. This Blueprint uses a new
-resource name so a sync can provision Frankfurt without deleting the old disk.
-Once the new service is verified, delete the old `elasticsearch` Oregon service
-and its disk. Removing a resource from a Blueprint does not itself delete it.
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
 
-Blueprint changes sync automatically unless Blueprint Auto Sync is disabled.
-Service auto-deploy is disabled to avoid restarting Elasticsearch on every code
-push; use a manual service deploy for later image/config-only changes.
+For details and customization see https://render.com/docs/deploy-elasticsearch.
